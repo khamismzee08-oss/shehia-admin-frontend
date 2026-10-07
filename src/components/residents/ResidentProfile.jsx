@@ -1,6 +1,6 @@
 import StatusBadge from "../common/StatusBadge";
 import { formatDate, formatHouseNumber, humanize } from "../../utils/formatters";
-
+import { resolveFileUrl } from "../../utils/fileUrl";
 export default function ResidentProfile({ resident, onStatus }) {
   if(!resident) return null;
   const fields=[["Full name",resident.fullName],["ZanID",resident.zanId],["Resident ID",`RES-${String(resident.id).padStart(3,"0")}`],["Gender",resident.gender ? humanize(resident.gender) : null],["Date of birth",formatDate(resident.dateOfBirth)],["Phone",resident.phoneNumber],["Email",resident.email],["House number",formatHouseNumber(resident.houseNumber)],["Shehia",resident.shehia],["Street",resident.street],["District",resident.district],["Region",resident.region]];
@@ -15,7 +15,7 @@ export default function ResidentProfile({ resident, onStatus }) {
     <hr className="my-4"/>
     <div className="row g-3">
       {[["ZanID document",resident.idDocumentUrl],["Proof of residence",resident.proofOfResidenceUrl]].map(([label,url])=><div className="col-md-6" key={label}>
-        <div className="detail-label mb-2">{label}</div>{url ? <a className="document-link text-success" href={url} target="_blank" rel="noreferrer"><i className="bi bi-file-earmark-arrow-down"/> Open document <i className="bi bi-box-arrow-up-right ms-auto"/></a> : <div className="text-secondary small">No document URL supplied by API.</div>}
+        <div className="detail-label mb-2">{label}</div>{url ? <a className="document-link text-success" href={resolveFileUrl(url)} target="_blank" rel="noreferrer"><i className="bi bi-file-earmark-arrow-down"/> Open document <i className="bi bi-box-arrow-up-right ms-auto"/></a> : <div className="text-secondary small">No document URL supplied by API.</div>}
       </div>)}
     </div>
   </div>;

@@ -2,6 +2,7 @@ import { useEffect,useRef,useState } from "react";
 import { lettersApi } from "../../api/api";
 import { LETTER_STATUSES } from "../../utils/constants";
 import { formatDate,humanize } from "../../utils/formatters";
+import { resolveFileUrl } from "../../utils/fileUrl";
 import StatusBadge from "../common/StatusBadge";
 import LetterPreview from "./LetterPreview";
 import LoadingSpinner from "../common/LoadingSpinner";
@@ -40,7 +41,7 @@ export default function LetterReview({refNo,onBack,onSaved}){
  };
  if(!letter&&!error)return <LoadingSpinner label="Loading letter review..."/>;
  return <div><div className="d-flex align-items-center gap-3 mb-4"><button className="btn btn-light" onClick={onBack}><i className="bi bi-arrow-left"/></button><div><h1 className="page-title">Review Letter Application</h1><p className="page-subtitle">{refNo}</p></div><div className="ms-auto"><StatusBadge value={letter?.status}/></div></div>
- <ErrorAlert error={error} onRetry={load}/>{letter&&<><div className="card-custom p-4 mb-4"><div className="row g-3"><div className="col-md-6"><div className="detail-label">Template</div><div className="detail-value">{humanize(letter.letterType)}</div></div><div className="col-md-6"><div className="detail-label">Resident</div><div className="detail-value">{letter.resident?.fullName} <span className="text-secondary fw-normal">({letter.resident?.zanId})</span></div></div><div className="col-md-6"><div className="detail-label">Submitted</div><div className="detail-value">{formatDate(letter.submittedAt,true)}</div></div><div className="col-md-6"><div className="detail-label">Supporting document</div><div>{letter.supportingDocUrl?<a href={letter.supportingDocUrl} target="_blank" rel="noreferrer" className="text-success">Open document <i className="bi bi-box-arrow-up-right"/></a>:<span className="text-secondary">No URL supplied</span>}</div></div></div></div>
+ <ErrorAlert error={error} onRetry={load}/>{letter&&<><div className="card-custom p-4 mb-4"><div className="row g-3"><div className="col-md-6"><div className="detail-label">Template</div><div className="detail-value">{humanize(letter.letterType)}</div></div><div className="col-md-6"><div className="detail-label">Resident</div><div className="detail-value">{letter.resident?.fullName} <span className="text-secondary fw-normal">({letter.resident?.zanId})</span></div></div><div className="col-md-6"><div className="detail-label">Submitted</div><div className="detail-value">{formatDate(letter.submittedAt,true)}</div></div><div className="col-md-6"><div className="detail-label">Supporting document</div><div>{letter.supportingDocUrl?<a href={resolveFileUrl(letter.supportingDocUrl)} target="_blank" rel="noreferrer" className="text-success">Open document <i className="bi bi-box-arrow-up-right"/></a>:<span className="text-secondary">No URL supplied</span>}</div></div></div></div>
  <div className="card-custom p-4 mb-4">
   <div className="d-flex align-items-center justify-content-between mb-3 flex-wrap gap-2">
    <h5 className="mb-0"><i className="bi bi-file-earmark-text me-2"/>Letter Preview{letter.customContent&&<span className="badge bg-warning-subtle text-warning-emphasis ms-2">Edited</span>}</h5>
