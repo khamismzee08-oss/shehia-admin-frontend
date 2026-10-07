@@ -1,0 +1,5 @@
+import StatusBadge from "../common/StatusBadge";
+import { formatDate,humanize } from "../../utils/formatters";
+export default function LetterTable({rows,onReview,onDownload}){
+ return <div className="table-wrap"><table className="table table-hover mb-0"><thead><tr><th>Reference</th><th>Resident</th><th>Type</th><th>Status</th><th>Submitted</th><th className="text-end">Action</th></tr></thead><tbody>{rows.map(l=><tr key={l.id}><td className="fw-semibold text-success">{l.referenceNumber}</td><td><div className="fw-semibold">{l.resident?.fullName||"—"}</div><div className="small text-secondary">{l.resident?.zanId||""}</div></td><td>{humanize(l.letterType)}</td><td><StatusBadge value={l.status}/></td><td>{formatDate(l.submittedAt,true)}</td><td className="text-end"><div className="btn-group btn-group-sm">{l.status==="PENDING"||l.status==="CHANGES_REQUESTED"?<button className="btn btn-shehia-primary" onClick={()=>onReview(l.referenceNumber)}>Review</button>:null}<button className="btn btn-light" onClick={()=>onDownload(l.referenceNumber)} title="Open PDF"><i className="bi bi-filetype-pdf"/></button></div></td></tr>)}</tbody></table></div>
+}

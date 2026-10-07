@@ -1,0 +1,5 @@
+import StatusBadge from "../common/StatusBadge";
+import { formatDate,humanize } from "../../utils/formatters";
+export default function IssueTable({rows,onOpen,onAction}){
+ return <div className="table-wrap"><table className="table table-hover mb-0"><thead><tr><th>Report</th><th>Resident</th><th>Category</th><th>Priority</th><th>Status</th><th>Officer</th><th>Created</th><th className="text-end">Actions</th></tr></thead><tbody>{rows.map(i=><tr key={i.id}><td className="fw-semibold text-success">{i.reportNumber}</td><td><div className="fw-semibold">{i.resident?.fullName||"—"}</div><div className="small text-secondary">{i.resident?.phoneNumber||""}</div></td><td>{humanize(i.category)}</td><td><StatusBadge value={i.priority}/></td><td><StatusBadge value={i.status}/></td><td>{i.assignedOfficer||"Unassigned"}</td><td>{formatDate(i.createdAt,true)}</td><td className="text-end"><div className="btn-group btn-group-sm"><button className="btn btn-light" onClick={()=>onOpen(i)}><i className="bi bi-eye"/></button><button className="btn btn-outline-success" onClick={()=>onAction(i)}>Manage</button></div></td></tr>)}</tbody></table></div>
+}
